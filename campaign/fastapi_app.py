@@ -1,5 +1,5 @@
 """
-FastAPI with XGBoost Model
+FastAPI with Gradient Boosted Tree Model
 """
 # ---------------------------------------------
 # Python Setup
@@ -8,12 +8,12 @@ import numpy as np
 import pandas as pd
 from typing import List
 from joblib import load
-from xgboost import XGBClassifier
+from sklearn.ensemble import GradientBoostingClassifier
 from pydantic import BaseModel
 
 # ---------------------------------------------
 # Load the saved model
-model_filename = 'xgboost_model.joblib'
+model_filename = 'gradientboosted_model'
 model = load(model_filename)
 
 # ---------------------------------------------
