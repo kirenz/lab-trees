@@ -64,3 +64,7 @@ campaign_engagement = st.slider(
 if st.button('Predict'):
     result = predict(age, city, income, membership_days, campaign_engagement)
     st.write(f'The prediction is: {result}')
+    if result == 0:
+        st.write("It is unlikely that the customer will respond.")
+    else:
+        st.write("The customer is likely to respond.")
