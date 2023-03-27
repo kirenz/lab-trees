@@ -1,5 +1,5 @@
 """
-Streamlit App XGBoost Marketing Prediction
+Streamlit App Marketing Prediction
 """
 
 # ---------------------------------------------
@@ -8,11 +8,11 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from joblib import load
-from xgboost import XGBClassifier
+from sklearn.ensemble import GradientBoostingClassifier
 # ---------------------------------------------
 
 # Load the saved model
-model_filename = 'xgboost_model.joblib'
+model_filename = 'gradientboosted_model'
 model = load(model_filename)
 
 # Define prediction function
