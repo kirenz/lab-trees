@@ -12,7 +12,7 @@ from sklearn.ensemble import GradientBoostingClassifier
 # ---------------------------------------------
 
 # Load the saved model
-model_filename = 'gradientboosted_model'
+model_filename = 'gradientboosted_model.joblib'
 model = load(model_filename)
 
 # Define prediction function
@@ -46,7 +46,10 @@ def predict(age, city, income, membership_days, campaign_engagement):
 # Streamlit app
 
 # Title
-st.title('Online Marketing XGBoost Model')
+st.title('Campaign Response Prediction')
+
+# Text
+st.text('Input customer data:')
 
 # Slider for input data
 age = st.slider('Age', min_value=18, max_value=64, value=30)
