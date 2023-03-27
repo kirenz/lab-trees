@@ -1,0 +1,330 @@
+---
+title: "Marketing Campaign Response Prediction"
+lang: en
+subtitle: "Using Gradient Boosted Trees"
+author: Jan Kirenz
+execute:
+  eval: true
+  echo: true
+highlight-style: github
+format:
+  revealjs: 
+    toc: true
+    toc-depth: 1
+    embed-resources: false
+    output-location: fragment
+    theme: [dark, ../custom.scss]  
+    incremental: true
+    transition: slide
+    transition-speed: slow
+    background-transition: fade
+    code-copy: true
+    code-line-numbers: true
+    smaller: false
+    scrollable: true
+    slide-number: c
+    preview-links: auto
+    chalkboard: 
+      buttons: false
+    #logo: images/logo.png
+    footer: Jan Kirenz
+jupyter: python3   
+---
+
+
+```{python}
+# | echo: false
+
+import requests
+import numpy as np
+import pandas as pd
+from joblib import dump, load
+
+import xgboost as xgb
+
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
+
+```
+
+
+# Introduction
+
+![](images/marketing-campaign.png)
+
+- Predict the response to a marketing campaign
+
+
+## Example Payback
+
+![](images/payback.jpeg)
+
+## Marketing use case
+
+- The goal is to predict if 
+   - a customer 
+   - will respond positively (e.g. buys a product)
+   - to a future campaign 
+   - based on their features
+
+- We use data from previous campaigns to train a model.
+
+
+# Data
+
+## Data overview
+
+- `age`: Customer's age (integer)
+- `city`: Customer's place of residence (string: 'Berlin', 'Stuttgart')
+- `income`: Customer's annual income (integer)
+- `membership_days`: Number of days the customer has been a member (integer)
+- `campaign_engagement`: Number of times the customer engaged with previous campaigns (integer)
+- `target`: Whether the customer responded positively to the campaign (0 or 1)
+
+## Import data
+
+```{python}
+df = pd.read_csv('data.csv')
+```
+
+## Data overview
+
+```{python}
+df
+```
+
+## Data info
+
+```{python}
+df.info()
+```
+
+## Data corrections
+
+- Encode categorical variables 
+
+. . .
+
+```{python}
+df = pd.get_dummies(df, columns=['city'])
+```
+
+. . .
+
+```{python}
+df.info()
+
+```
+
+## Data splitting
+
+- Split the df into features (X) and target (y)
+
+. . .
+
+```{python}
+X = df.drop('target', axis=1)
+y = df['target']
+```
+
+- Train, test split
+. . .
+
+```{python}
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42)
+```
+
+
+# Model
+
+## Select model
+
+- We use XGBoost to make our predictions
+
+. . .
+
+```{python}
+# | code-line-numbers: "|1|2|3|4"
+
+model = xgb.XGBClassifier(
+    n_estimators=100,
+    max_depth=5)
+```
+
+- `n_estimators`: Number of gradient boosted trees
+- `max_depth`: Maximum tree depth
+
+## Train model
+
+- Train the model on the training data
+
+. . .
+
+```{python}
+model.fit(X_train, y_train)
+```
+
+## Evaluate model
+
+- Predict on the testing data
+
+. . .
+
+```{python}
+# Predict on the testing data
+y_pred = model.predict(X_test)
+
+```
+
+- Calculate accuracy
+
+. . .
+
+```{python}
+accuracy_score(y_test, y_pred)
+```
+
+## Confusion matrix
+
+- Print confusion matrix 
+
+. . .
+
+```{python}
+print(confusion_matrix(y_test, y_pred))
+
+```
+
+
+## Classification report
+
+- Print classification report
+
+. . .
+ 
+```{python}
+print(classification_report(y_test, y_pred))
+
+```
+
+
+## Save model
+
+```{python}
+# | eval: false
+
+model_filename = 'xgboost_model.joblib'
+dump(model, model_filename)
+```
+
+
+# Next steps? {background-image="images/marketing.png"}
+
+## Status quo
+
+1. We trained a model
+
+2. Our model makes a prediction if a customer will respond positively or not 
+
+3. We saved the model
+
+## How to use the model?
+
+- We want to use the model on "new" data
+
+- Integrate ("deploy") the model in a dashboard
+
+- Use an API to allow other software applications to use the model
+
+
+## Streamlit Dashboard
+
+![](images/streamlit.png)
+
+
+## FastAPI
+
+<!--
+
+- Run the FastAPI app:
+
+. . .
+
+```bash
+uvicorn fastapi_app:app --reload
+
+```
+
+-->
+
+- FastAPI app with a single `/predict` endpoint 
+
+- Accepts POST requests with JSON data containing age, city, income, membership days, and campaign engagement. 
+
+- The app will return a JSON response with the prediction.
+
+## Test API with data
+
+- You can test the API using a tool like [Postman](https://www.postman.com/) or by using Python's requests library:
+
+. . .
+
+```{python}
+# | eval: false
+# | code-line-numbers: "|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20"
+
+
+url = "http://127.0.0.1:8000/predict"
+data = {
+    "data": [
+        {
+            "age": 30,
+            "city": "city_Berlin",
+            "income": 50000,
+            "membership_days": 500,
+            "campaign_engagement": 5
+        },
+        {
+            "age": 55,
+            "city": "city_Stuttgart",
+            "income": 155000,
+            "membership_days": 250,
+            "campaign_engagement": 8
+        }
+    ]
+}
+
+
+```
+
+## Get response
+
+
+```{python}
+# | eval: false
+# | code-line-numbers: "|1|2|3|4|5|6|7|8|9|10|11|12"
+
+response = requests.post(url, json=data)
+
+if response.status_code == 200:
+    results = response.json()['results']
+    df = pd.DataFrame(results)
+    df.to_csv('predictions.csv', index=False)
+    print("Predictions saved to 'predictions.csv'")
+else:
+    print(f"Error: {response.status_code}")
+    print(response.text)
+
+
+```
+
+## Output
+
+
+```bash
+age,city,income,membership_days,campaign_engagement,prediction
+30,city_Berlin,50000,500,5,0
+55,city_Stuttgart,155000,250,8,1
+```
+

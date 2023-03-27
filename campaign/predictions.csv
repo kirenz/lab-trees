@@ -1,0 +1,3 @@
+age,city,income,membership_days,campaign_engagement,prediction
+30,city_Berlin,50000,500,5,0
+55,city_Stuttgart,155000,250,8,1
