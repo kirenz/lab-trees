@@ -84,7 +84,8 @@ from sklearn.metrics import accuracy_score, confusion_matrix, classification_rep
 ## Import data
 
 ```{python}
-df = pd.read_csv('data.csv')
+df = pd.read_csv(
+    'https://raw.githubusercontent.com/kirenz/datasets/master/campaign.csv')
 ```
 
 ## Data overview
