@@ -286,16 +286,16 @@ url = "http://127.0.0.1:8000/predict"
 data = {
     "data": [
         {
-            "age": 30,
+            "age": 25,
             "city": "city_Berlin",
-            "income": 50000,
-            "membership_days": 500,
-            "campaign_engagement": 5
+            "income": 25000,
+            "membership_days": 4,
+            "campaign_engagement": 1
         },
         {
-            "age": 55,
+            "age": 35,
             "city": "city_Stuttgart",
-            "income": 155000,
+            "income": 120000,
             "membership_days": 250,
             "campaign_engagement": 8
         }
