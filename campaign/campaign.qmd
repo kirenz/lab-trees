@@ -70,8 +70,59 @@ from sklearn.metrics import accuracy_score, confusion_matrix, classification_rep
 
 - We use data from previous campaigns to train a model
 
+# Boosting: An Intuitive Introduction
 
-# Data
+## Overview
+
+- Boosting is an ensemble learning method
+
+- Combines multiple weak learners to build a strong classifier
+
+- Learners are trained sequentially
+
+- Each learner focuses on correcting the mistakes of its predecessor
+
+## Intuition
+
+1. Begin with a weak learner that performs slightly better than random guessing
+
+2. Train a new weak learner to correct the mistakes of the previous one
+
+3. Repeat the process, focusing on different error patterns each time
+
+4. Combine all weak learners into a strong classifier
+
+## Difference to Bagging {.smaller}
+
+- Bagging:
+  - Learners are trained independently
+  - Training samples are drawn with replacement (bootstrapping)
+  - Combines learners by averaging (regression) or voting (classification)
+
+- Boosting:
+  - Learners are trained sequentially
+  - Emphasis is placed on misclassified instances
+  - Combines learners by weighted averaging
+
+## Advantages of Boosting
+
+- Can achieve high accuracy with simple weak learners
+
+- Less prone to overfitting than single models
+
+- Can be applied to various learning algorithms
+
+## Disadvantages of Boosting
+
+- Sensitive to noise and outliers
+
+- Computationally expensive due to sequential training
+
+- Can overfit if weak learners are too complex
+
+
+
+# Code example
 
 ## Data overview
 
@@ -146,8 +197,6 @@ X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42)
 ```
 
-
-# Model
 
 ## Select model
 
@@ -274,10 +323,7 @@ model_filename = 'gradientboosted_model.joblib'
 dump(clf, model_filename)
 ```
 
-
-# Next steps? 
-
-## Status quo
+## Summary
 
 1. We trained a model
 
@@ -290,7 +336,9 @@ dump(clf, model_filename)
 5. We want to use the model to target customers
 
 
-## How to use the model?
+# How to use the model?
+
+## Dashboard & API
 
 
 - Integrate ("deploy") the model in a dashboard (e.g. [Streamlit]((https://streamlit.io/)))
@@ -318,7 +366,7 @@ uvicorn fastapi_app:app --reload
 
 -->
 
-- FastAPI app with a single `/predict` endpoint 
+- Use an FastAPI app with a single `/predict` endpoint 
 
 - Accepts POST requests with JSON data containing age, city, income, membership days, and campaign engagement. 
 
