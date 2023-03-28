@@ -415,6 +415,7 @@ Jan Kirenz
 <li class="fragment"><a href="#/data" id="/toc-data">Data</a></li>
 <li class="fragment"><a href="#/model" id="/toc-model">Model</a></li>
 <li class="fragment"><a href="#/next-steps" id="/toc-next-steps">Next steps?</a></li>
+<li class="fragment"><a href="#/questions" id="/toc-questions">Questions?</a></li>
 </ul>
 </nav>
 </section>
@@ -440,7 +441,7 @@ Jan Kirenz
 <li class="fragment">to a future campaign</li>
 <li class="fragment">based on their features</li>
 </ul></li>
-<li class="fragment">We use data from previous campaigns to train a model.</li>
+<li class="fragment">We use data from previous campaigns to train a model</li>
 </ul>
 </section></section>
 <section>
@@ -462,7 +463,8 @@ Jan Kirenz
 <section id="import-data" class="slide level2">
 <h2>Import data</h2>
 <div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'data.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a>df <span class="op">=</span> pd.read_csv(</span>
+<span id="cb1-2"><a href="#cb1-2"></a>    <span class="st">'https://raw.githubusercontent.com/kirenz/datasets/master/campaign.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment" data-execution_count="2">
 
@@ -684,13 +686,26 @@ memory usage: 41.1 KB</code></pre>
 
 </div>
 <ul>
-<li class="fragment">Train, test split . . .</li>
+<li class="fragment">Save feature names for later evaluation steps</li>
 </ul>
+</div>
+<div class="fragment">
 <div class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
-<span id="cb9-2"><a href="#cb9-2"></a>    X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a>feature_names <span class="op">=</span> X.columns</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell fragment" data-execution_count="8">
+
+</div>
+<ul>
+<li class="fragment">Make train and test split</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb10-2"><a href="#cb10-2"></a>    X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment" data-execution_count="9">
 
 </div>
 </div>
@@ -702,15 +717,18 @@ memory usage: 41.1 KB</code></pre>
 </section>
 <section id="select-model" class="slide level2">
 <h2>Select model</h2>
+<ul>
+<li class="fragment">Define hyperparameters as dictionary</li>
+</ul>
 <div class="fragment">
-<div class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb10" data-code-line-numbers="|1|2|3|4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a>params <span class="op">=</span> {</span>
-<span id="cb10-2"><a href="#cb10-2"></a>    <span class="st">"n_estimators"</span>: <span class="dv">50</span>,</span>
-<span id="cb10-3"><a href="#cb10-3"></a>    <span class="st">"max_depth"</span>: <span class="dv">3</span>,</span>
-<span id="cb10-4"><a href="#cb10-4"></a>    <span class="st">"min_samples_split"</span>: <span class="dv">5</span>,</span>
-<span id="cb10-5"><a href="#cb10-5"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb11" data-code-line-numbers="|1|2|3|4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>params <span class="op">=</span> {</span>
+<span id="cb11-2"><a href="#cb11-2"></a>    <span class="st">"n_estimators"</span>: <span class="dv">50</span>,</span>
+<span id="cb11-3"><a href="#cb11-3"></a>    <span class="st">"max_depth"</span>: <span class="dv">3</span>,</span>
+<span id="cb11-4"><a href="#cb11-4"></a>    <span class="st">"min_samples_split"</span>: <span class="dv">5</span>,</span>
+<span id="cb11-5"><a href="#cb11-5"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-execution_count="9">
+<div class="cell fragment" data-execution_count="10">
 
 </div>
 <ul>
@@ -720,10 +738,10 @@ memory usage: 41.1 KB</code></pre>
 </ul>
 </div>
 <div class="fragment">
-<div class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>clf <span class="op">=</span> GradientBoostingClassifier(<span class="op">**</span>params)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a>clf <span class="op">=</span> GradientBoostingClassifier(<span class="op">**</span>params)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-execution_count="10">
+<div class="cell fragment" data-execution_count="11">
 
 </div>
 </div>
@@ -731,14 +749,14 @@ memory usage: 41.1 KB</code></pre>
 <section id="train-model" class="slide level2">
 <h2>Train model</h2>
 <ul>
-<li class="fragment">Train the model on the training data</li>
+<li class="fragment">Train the model on the <em>training</em> data</li>
 </ul>
 <div class="fragment">
-<div class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a>clf.fit(X_train, y_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a>clf.fit(X_train, y_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-execution_count="11">
-<div class="cell-output cell-output-display" data-execution_count="11">
+<div class="cell fragment" data-execution_count="12">
+<div class="cell-output cell-output-display" data-execution_count="12">
 <style>#sk-container-id-1 {color: black;background-color: white;}#sk-container-id-1 pre{padding: 0;}#sk-container-id-1 div.sk-toggleable {background-color: white;}#sk-container-id-1 label.sk-toggleable__label {cursor: pointer;display: block;width: 100%;margin-bottom: 0;padding: 0.3em;box-sizing: border-box;text-align: center;}#sk-container-id-1 label.sk-toggleable__label-arrow:before {content: "▸";float: left;margin-right: 0.25em;color: #696969;}#sk-container-id-1 label.sk-toggleable__label-arrow:hover:before {color: black;}#sk-container-id-1 div.sk-estimator:hover label.sk-toggleable__label-arrow:before {color: black;}#sk-container-id-1 div.sk-toggleable__content {max-height: 0;max-width: 0;overflow: hidden;text-align: left;background-color: #f0f8ff;}#sk-container-id-1 div.sk-toggleable__content pre {margin: 0.2em;color: black;border-radius: 0.25em;background-color: #f0f8ff;}#sk-container-id-1 input.sk-toggleable__control:checked~div.sk-toggleable__content {max-height: 200px;max-width: 100%;overflow: auto;}#sk-container-id-1 input.sk-toggleable__control:checked~label.sk-toggleable__label-arrow:before {content: "▾";}#sk-container-id-1 div.sk-estimator input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-label input.sk-toggleable__control:checked~label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 input.sk-hidden--visually {border: 0;clip: rect(1px 1px 1px 1px);clip: rect(1px, 1px, 1px, 1px);height: 1px;margin: -1px;overflow: hidden;padding: 0;position: absolute;width: 1px;}#sk-container-id-1 div.sk-estimator {font-family: monospace;background-color: #f0f8ff;border: 1px dotted black;border-radius: 0.25em;box-sizing: border-box;margin-bottom: 0.5em;}#sk-container-id-1 div.sk-estimator:hover {background-color: #d4ebff;}#sk-container-id-1 div.sk-parallel-item::after {content: "";width: 100%;border-bottom: 1px solid gray;flex-grow: 1;}#sk-container-id-1 div.sk-label:hover label.sk-toggleable__label {background-color: #d4ebff;}#sk-container-id-1 div.sk-serial::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: 0;}#sk-container-id-1 div.sk-serial {display: flex;flex-direction: column;align-items: center;background-color: white;padding-right: 0.2em;padding-left: 0.2em;position: relative;}#sk-container-id-1 div.sk-item {position: relative;z-index: 1;}#sk-container-id-1 div.sk-parallel {display: flex;align-items: stretch;justify-content: center;background-color: white;position: relative;}#sk-container-id-1 div.sk-item::before, #sk-container-id-1 div.sk-parallel-item::before {content: "";position: absolute;border-left: 1px solid gray;box-sizing: border-box;top: 0;bottom: 0;left: 50%;z-index: -1;}#sk-container-id-1 div.sk-parallel-item {display: flex;flex-direction: column;z-index: 1;position: relative;background-color: white;}#sk-container-id-1 div.sk-parallel-item:first-child::after {align-self: flex-end;width: 50%;}#sk-container-id-1 div.sk-parallel-item:last-child::after {align-self: flex-start;width: 50%;}#sk-container-id-1 div.sk-parallel-item:only-child::after {width: 0;}#sk-container-id-1 div.sk-dashed-wrapped {border: 1px dashed gray;margin: 0 0.4em 0.5em 0.4em;box-sizing: border-box;padding-bottom: 0.4em;background-color: white;}#sk-container-id-1 div.sk-label label {font-family: monospace;font-weight: bold;display: inline-block;line-height: 1.2em;}#sk-container-id-1 div.sk-label-container {text-align: center;}#sk-container-id-1 div.sk-container {/* jupyter's `normalize.less` sets `[hidden] { display: none; }` but bootstrap.min.css set `[hidden] { display: none !important; }` so we also need the `!important` here to be able to override the default hidden behavior on the sphinx rendered scikit-learn.org. See: https://github.com/scikit-learn/scikit-learn/issues/21755 */display: inline-block !important;position: relative;}#sk-container-id-1 div.sk-text-repr-fallback {display: none;}</style><div id="sk-container-id-1" class="sk-top-container"><div class="sk-text-repr-fallback"><pre>GradientBoostingClassifier(min_samples_split=5, n_estimators=50)</pre><b>In a Jupyter environment, please rerun this cell to show the HTML representation or trust the notebook. <br>On GitHub, the HTML representation is unable to render, please try loading this page with nbviewer.org.</b></div><div class="sk-container" hidden=""><div class="sk-item"><div class="sk-estimator sk-toggleable"><input class="sk-toggleable__control sk-hidden--visually" id="sk-estimator-id-1" type="checkbox" checked=""><label for="sk-estimator-id-1" class="sk-toggleable__label sk-toggleable__label-arrow">GradientBoostingClassifier</label><div class="sk-toggleable__content"><pre>GradientBoostingClassifier(min_samples_split=5, n_estimators=50)</pre></div></div></div></div></div>
 </div>
 </div>
@@ -747,14 +765,14 @@ memory usage: 41.1 KB</code></pre>
 <section id="evaluate-model" class="slide level2">
 <h2>Evaluate model</h2>
 <ul>
-<li class="fragment">Predict on the testing data</li>
+<li class="fragment">Predict on the <em>testing</em> data</li>
 </ul>
 <div class="fragment">
-<div class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># Predict on the testing data</span></span>
-<span id="cb13-2"><a href="#cb13-2"></a>y_pred <span class="op">=</span> clf.predict(X_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a><span class="co"># Predict on the testing data</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a>y_pred <span class="op">=</span> clf.predict(X_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-execution_count="12">
+<div class="cell fragment" data-execution_count="13">
 
 </div>
 <ul>
@@ -762,11 +780,11 @@ memory usage: 41.1 KB</code></pre>
 </ul>
 </div>
 <div class="fragment">
-<div class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a>accuracy_score(y_test, y_pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a>accuracy_score(y_test, y_pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-execution_count="13">
-<div class="cell-output cell-output-display" data-execution_count="13">
+<div class="cell fragment" data-execution_count="14">
+<div class="cell-output cell-output-display" data-execution_count="14">
 <pre><code>0.92</code></pre>
 </div>
 </div>
@@ -778,10 +796,10 @@ memory usage: 41.1 KB</code></pre>
 <li class="fragment">Print confusion matrix</li>
 </ul>
 <div class="fragment">
-<div class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a><span class="bu">print</span>(confusion_matrix(y_test, y_pred))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a><span class="bu">print</span>(confusion_matrix(y_test, y_pred))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-execution_count="14">
+<div class="cell fragment" data-execution_count="15">
 <div class="cell-output cell-output-stdout">
 <pre><code>[[94  7]
  [ 9 90]]</code></pre>
@@ -795,10 +813,10 @@ memory usage: 41.1 KB</code></pre>
 <li class="fragment">Print classification report</li>
 </ul>
 <div class="fragment">
-<div class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a><span class="bu">print</span>(classification_report(y_test, y_pred))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1"></a><span class="bu">print</span>(classification_report(y_test, y_pred))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-execution_count="15">
+<div class="cell fragment" data-execution_count="16">
 <div class="cell-output cell-output-stdout">
 <pre><code>              precision    recall  f1-score   support
 
@@ -813,18 +831,177 @@ weighted avg       0.92      0.92      0.92       200
 </div>
 </div>
 </section>
+<section id="obtain-feature-importance" class="slide level2">
+<h2>Obtain feature importance</h2>
+<ul>
+<li class="fragment">Obtain feature importance</li>
+</ul>
+<div class="fragment">
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1"></a>feature_importance <span class="op">=</span> clf.feature_importances_</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment" data-execution_count="17">
+
+</div>
+<ul>
+<li class="fragment">Save as dataframe</li>
+</ul>
+</div>
+<div class="fragment">
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1"></a>df_features <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb22-2"><a href="#cb22-2"></a>    {<span class="st">"score"</span>: feature_importance,</span>
+<span id="cb22-3"><a href="#cb22-3"></a>     <span class="st">"name"</span>: feature_names})</span>
+<span id="cb22-4"><a href="#cb22-4"></a></span>
+<span id="cb22-5"><a href="#cb22-5"></a>df_features</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment" data-execution_count="18">
+<div class="cell-output cell-output-display" data-execution_count="18">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">score</th>
+<th data-quarto-table-cell-role="th">name</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>0.135131</td>
+<td>age</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>0.354875</td>
+<td>income</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>0.005587</td>
+<td>membership_days</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>0.503843</td>
+<td>campaign_engagement</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>0.000000</td>
+<td>city_Berlin</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">5</td>
+<td>0.000564</td>
+<td>city_Stuttgart</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="plot-feature-importance" class="slide level2">
+<h2>Plot feature importance</h2>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1"></a>alt.Chart(df_features).mark_bar().encode(</span>
+<span id="cb23-2"><a href="#cb23-2"></a>    x<span class="op">=</span>alt.X(<span class="st">'score'</span>),</span>
+<span id="cb23-3"><a href="#cb23-3"></a>    y<span class="op">=</span>alt.Y(<span class="st">'name'</span>, sort<span class="op">=</span><span class="st">'-x'</span>)</span>
+<span id="cb23-4"><a href="#cb23-4"></a>).properties(</span>
+<span id="cb23-5"><a href="#cb23-5"></a>    width<span class="op">=</span><span class="dv">800</span>,</span>
+<span id="cb23-6"><a href="#cb23-6"></a>    height<span class="op">=</span><span class="dv">300</span></span>
+<span id="cb23-7"><a href="#cb23-7"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell fragment" data-execution_count="19">
+<div class="cell-output cell-output-display" data-execution_count="19">
+
+<div id="altair-viz-8eeb98b8f3354a54a0860458504779c5"></div>
+<script type="text/javascript">
+  var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
+  (function(spec, embedOpt){
+    let outputDiv = document.currentScript.previousElementSibling;
+    if (outputDiv.id !== "altair-viz-8eeb98b8f3354a54a0860458504779c5") {
+      outputDiv = document.getElementById("altair-viz-8eeb98b8f3354a54a0860458504779c5");
+    }
+    const paths = {
+      "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
+      "vega-lib": "https://cdn.jsdelivr.net/npm//vega-lib?noext",
+      "vega-lite": "https://cdn.jsdelivr.net/npm//vega-lite@4.17.0?noext",
+      "vega-embed": "https://cdn.jsdelivr.net/npm//vega-embed@6?noext",
+    };
+
+    function maybeLoadScript(lib, version) {
+      var key = `${lib.replace("-", "")}_version`;
+      return (VEGA_DEBUG[key] == version) ?
+        Promise.resolve(paths[lib]) :
+        new Promise(function(resolve, reject) {
+          var s = document.createElement('script');
+          document.getElementsByTagName("head")[0].appendChild(s);
+          s.async = true;
+          s.onload = () => {
+            VEGA_DEBUG[key] = version;
+            return resolve(paths[lib]);
+          };
+          s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
+          s.src = paths[lib];
+        });
+    }
+
+    function showError(err) {
+      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
+      throw err;
+    }
+
+    function displayChart(vegaEmbed) {
+      vegaEmbed(outputDiv, spec, embedOpt)
+        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
+    }
+
+    if(typeof define === "function" && define.amd) {
+      requirejs.config({paths});
+      require(["vega-embed"], displayChart, err => showError(`Error loading script: ${err.message}`));
+    } else {
+      maybeLoadScript("vega", "5")
+        .then(() => maybeLoadScript("vega-lite", "4.17.0"))
+        .then(() => maybeLoadScript("vega-embed", "6"))
+        .catch(showError)
+        .then(() => displayChart(vegaEmbed));
+    }
+  })({"config": {"view": {"continuousWidth": 400, "continuousHeight": 300}}, "data": {"name": "data-7ea213f32e55d01f7270056c7c22859d"}, "mark": "bar", "encoding": {"x": {"field": "score", "type": "quantitative"}, "y": {"field": "name", "sort": "-x", "type": "nominal"}}, "height": 300, "width": 800, "$schema": "https://vega.github.io/schema/vega-lite/v4.17.0.json", "datasets": {"data-7ea213f32e55d01f7270056c7c22859d": [{"score": 0.13513147032599207, "name": "age"}, {"score": 0.35487473528940877, "name": "income"}, {"score": 0.005587388676431064, "name": "membership_days"}, {"score": 0.5038428218900224, "name": "campaign_engagement"}, {"score": 0.0, "name": "city_Berlin"}, {"score": 0.0005635838181457675, "name": "city_Stuttgart"}]}}, {"mode": "vega-lite"});
+</script>
+</div>
+</div>
+</section>
 <section id="save-model" class="slide level2">
 <h2>Save model</h2>
-<div class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a>model_filename <span class="op">=</span> <span class="st">'gradientboosted_model.joblib'</span></span>
-<span id="cb20-2"><a href="#cb20-2"></a>dump(clf, model_filename)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1"></a>model_filename <span class="op">=</span> <span class="st">'gradientboosted_model.joblib'</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a>dump(clf, model_filename)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-execution_count="16">
+<div class="cell fragment" data-execution_count="20">
 
 </div>
 </section></section>
 <section>
-<section id="next-steps" class="title-slide slide level1 center" data-background-image="images/marketing.png">
+<section id="next-steps" class="title-slide slide level1 center">
 <h1>Next steps?</h1>
 
 </section>
@@ -833,19 +1010,20 @@ weighted avg       0.92      0.92      0.92       200
 <ol type="1">
 <li class="fragment"><p>We trained a model</p></li>
 <li class="fragment"><p>Our model makes a prediction if a customer will respond positively or not</p></li>
+<li class="fragment"><p>The model does a good job and we want to use it</p></li>
 <li class="fragment"><p>We saved the model</p></li>
+<li class="fragment"><p>We want to use the model to target customers</p></li>
 </ol>
 </section>
 <section id="how-to-use-the-model" class="slide level2">
 <h2>How to use the model?</h2>
 <ul>
-<li class="fragment"><p>We want to use the model on “new” data</p></li>
-<li class="fragment"><p>Integrate (“deploy”) the model in a dashboard</p></li>
-<li class="fragment"><p>Use an API to allow other software applications to use the model</p></li>
+<li class="fragment"><p>Integrate (“deploy”) the model in a dashboard (e.g.&nbsp;<a href="(https://streamlit.io/)">Streamlit</a>)</p></li>
+<li class="fragment"><p>Use an API (e.g.&nbsp;<a href="https://fastapi.tiangolo.com/">FastAPI</a>) to allow other software applications to use the model</p></li>
 </ul>
 </section>
 <section id="streamlit-dashboard" class="slide level2">
-<h2>Streamlit Dashboard</h2>
+<h2>Streamlit dashboard</h2>
 
 <img data-src="images/streamlit.png" class="r-stretch"></section>
 <section id="fastapi" class="slide level2">
@@ -874,28 +1052,28 @@ uvicorn fastapi_app:app --reload
 <li class="fragment">You can test the API using Python’s requests library:</li>
 </ul>
 <div class="fragment">
-<div class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb21" data-code-line-numbers="|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1"></a>url <span class="op">=</span> <span class="st">"http://127.0.0.1:8000/predict"</span></span>
-<span id="cb21-2"><a href="#cb21-2"></a>data <span class="op">=</span> {</span>
-<span id="cb21-3"><a href="#cb21-3"></a>    <span class="st">"data"</span>: [</span>
-<span id="cb21-4"><a href="#cb21-4"></a>        {</span>
-<span id="cb21-5"><a href="#cb21-5"></a>            <span class="st">"age"</span>: <span class="dv">25</span>,</span>
-<span id="cb21-6"><a href="#cb21-6"></a>            <span class="st">"city"</span>: <span class="st">"city_Berlin"</span>,</span>
-<span id="cb21-7"><a href="#cb21-7"></a>            <span class="st">"income"</span>: <span class="dv">25000</span>,</span>
-<span id="cb21-8"><a href="#cb21-8"></a>            <span class="st">"membership_days"</span>: <span class="dv">4</span>,</span>
-<span id="cb21-9"><a href="#cb21-9"></a>            <span class="st">"campaign_engagement"</span>: <span class="dv">1</span></span>
-<span id="cb21-10"><a href="#cb21-10"></a>        },</span>
-<span id="cb21-11"><a href="#cb21-11"></a>        {</span>
-<span id="cb21-12"><a href="#cb21-12"></a>            <span class="st">"age"</span>: <span class="dv">35</span>,</span>
-<span id="cb21-13"><a href="#cb21-13"></a>            <span class="st">"city"</span>: <span class="st">"city_Stuttgart"</span>,</span>
-<span id="cb21-14"><a href="#cb21-14"></a>            <span class="st">"income"</span>: <span class="dv">120000</span>,</span>
-<span id="cb21-15"><a href="#cb21-15"></a>            <span class="st">"membership_days"</span>: <span class="dv">250</span>,</span>
-<span id="cb21-16"><a href="#cb21-16"></a>            <span class="st">"campaign_engagement"</span>: <span class="dv">8</span></span>
-<span id="cb21-17"><a href="#cb21-17"></a>        }</span>
-<span id="cb21-18"><a href="#cb21-18"></a>    ]</span>
-<span id="cb21-19"><a href="#cb21-19"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb25" data-code-line-numbers="|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1"></a>url <span class="op">=</span> <span class="st">"http://127.0.0.1:8000/predict"</span></span>
+<span id="cb25-2"><a href="#cb25-2"></a>data <span class="op">=</span> {</span>
+<span id="cb25-3"><a href="#cb25-3"></a>    <span class="st">"data"</span>: [</span>
+<span id="cb25-4"><a href="#cb25-4"></a>        {</span>
+<span id="cb25-5"><a href="#cb25-5"></a>            <span class="st">"age"</span>: <span class="dv">25</span>,</span>
+<span id="cb25-6"><a href="#cb25-6"></a>            <span class="st">"city"</span>: <span class="st">"city_Berlin"</span>,</span>
+<span id="cb25-7"><a href="#cb25-7"></a>            <span class="st">"income"</span>: <span class="dv">25000</span>,</span>
+<span id="cb25-8"><a href="#cb25-8"></a>            <span class="st">"membership_days"</span>: <span class="dv">4</span>,</span>
+<span id="cb25-9"><a href="#cb25-9"></a>            <span class="st">"campaign_engagement"</span>: <span class="dv">1</span></span>
+<span id="cb25-10"><a href="#cb25-10"></a>        },</span>
+<span id="cb25-11"><a href="#cb25-11"></a>        {</span>
+<span id="cb25-12"><a href="#cb25-12"></a>            <span class="st">"age"</span>: <span class="dv">35</span>,</span>
+<span id="cb25-13"><a href="#cb25-13"></a>            <span class="st">"city"</span>: <span class="st">"city_Stuttgart"</span>,</span>
+<span id="cb25-14"><a href="#cb25-14"></a>            <span class="st">"income"</span>: <span class="dv">120000</span>,</span>
+<span id="cb25-15"><a href="#cb25-15"></a>            <span class="st">"membership_days"</span>: <span class="dv">250</span>,</span>
+<span id="cb25-16"><a href="#cb25-16"></a>            <span class="st">"campaign_engagement"</span>: <span class="dv">8</span></span>
+<span id="cb25-17"><a href="#cb25-17"></a>        }</span>
+<span id="cb25-18"><a href="#cb25-18"></a>    ]</span>
+<span id="cb25-19"><a href="#cb25-19"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-execution_count="17">
+<div class="cell fragment" data-execution_count="21">
 
 </div>
 <!--
@@ -906,31 +1084,42 @@ You can test the API using a tool like [Postman](https://www.postman.com/) or by
 </section>
 <section id="get-response" class="slide level2">
 <h2>Get response</h2>
-<div class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb22" data-code-line-numbers="|1|2|3|4|5|6|7|8|9|10|11|12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1"></a>response <span class="op">=</span> requests.post(url, json<span class="op">=</span>data)</span>
-<span id="cb22-2"><a href="#cb22-2"></a></span>
-<span id="cb22-3"><a href="#cb22-3"></a><span class="cf">if</span> response.status_code <span class="op">==</span> <span class="dv">200</span>:</span>
-<span id="cb22-4"><a href="#cb22-4"></a>    results <span class="op">=</span> response.json()[<span class="st">'results'</span>]</span>
-<span id="cb22-5"><a href="#cb22-5"></a>    df <span class="op">=</span> pd.DataFrame(results)</span>
-<span id="cb22-6"><a href="#cb22-6"></a>    df.to_csv(<span class="st">'predictions.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span>
-<span id="cb22-7"><a href="#cb22-7"></a>    <span class="bu">print</span>(<span class="st">"Predictions saved to 'predictions.csv'"</span>)</span>
-<span id="cb22-8"><a href="#cb22-8"></a><span class="cf">else</span>:</span>
-<span id="cb22-9"><a href="#cb22-9"></a>    <span class="bu">print</span>(<span class="ss">f"Error: </span><span class="sc">{</span>response<span class="sc">.</span>status_code<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb22-10"><a href="#cb22-10"></a>    <span class="bu">print</span>(response.text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb26" data-code-line-numbers="|1|2|3|4|5|6|7|8|9|10|11|12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1"></a>response <span class="op">=</span> requests.post(url, json<span class="op">=</span>data)</span>
+<span id="cb26-2"><a href="#cb26-2"></a></span>
+<span id="cb26-3"><a href="#cb26-3"></a><span class="cf">if</span> response.status_code <span class="op">==</span> <span class="dv">200</span>:</span>
+<span id="cb26-4"><a href="#cb26-4"></a>    results <span class="op">=</span> response.json()[<span class="st">'results'</span>]</span>
+<span id="cb26-5"><a href="#cb26-5"></a>    df <span class="op">=</span> pd.DataFrame(results)</span>
+<span id="cb26-6"><a href="#cb26-6"></a>    df.to_csv(<span class="st">'predictions.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb26-7"><a href="#cb26-7"></a>    <span class="bu">print</span>(<span class="st">"Predictions saved to 'predictions.csv'"</span>)</span>
+<span id="cb26-8"><a href="#cb26-8"></a><span class="cf">else</span>:</span>
+<span id="cb26-9"><a href="#cb26-9"></a>    <span class="bu">print</span>(<span class="ss">f"Error: </span><span class="sc">{</span>response<span class="sc">.</span>status_code<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb26-10"><a href="#cb26-10"></a>    <span class="bu">print</span>(response.text)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell fragment" data-execution_count="18">
+<div class="cell fragment" data-execution_count="22">
 
 </div>
 </section>
 <section id="output" class="slide level2">
 <h2>Output</h2>
-<div class="sourceCode" id="cb23"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb23-1"><a href="#cb23-1"></a><span class="ex">age,city,income,membership_days,campaign_engagement,prediction</span></span>
-<span id="cb23-2"><a href="#cb23-2"></a><span class="ex">25,city_Berlin,25000,4,1,0.01</span></span>
-<span id="cb23-3"><a href="#cb23-3"></a><span class="ex">35,city_Stuttgart,120000,250,8,0.97</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode numberSource bash number-lines code-with-copy"><code class="sourceCode bash"><span id="cb27-1"><a href="#cb27-1"></a><span class="ex">age,city,income,membership_days,campaign_engagement,prediction</span></span>
+<span id="cb27-2"><a href="#cb27-2"></a><span class="ex">25,city_Berlin,25000,4,1,0.01</span></span>
+<span id="cb27-3"><a href="#cb27-3"></a><span class="ex">35,city_Stuttgart,120000,250,8,0.97</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="marketing-campaign" class="slide level2">
+<h2>Marketing campaign</h2>
+<ul>
+<li class="fragment"><p>Next, we would filter all customers at a certain threshold</p></li>
+<li class="fragment"><p>What would be a good threshold?</p></li>
+<li class="fragment"><p>Only target those customers with the marketing campaign</p></li>
+</ul>
+</section></section>
+<section id="questions" class="title-slide slide level1 center" data-background-image="images/marketing.png">
+<h1>Questions?</h1>
 <div class="footer footer-default">
 <p>Jan Kirenz</p>
 </div>
-</section></section>
+</section>
     </div>
   </div>
 
