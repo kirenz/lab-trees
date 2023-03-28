@@ -13,7 +13,7 @@ from pydantic import BaseModel
 
 # ---------------------------------------------
 # Load the saved model
-model_filename = 'gradientboosted_model'
+model_filename = 'gradientboosted_model.joblib'
 model = load(model_filename)
 
 # ---------------------------------------------
@@ -58,8 +58,11 @@ def predict(age, city, income, membership_days, campaign_engagement):
                     'campaign_engagement', 'city_Berlin', 'city_Stuttgart']
     df = df[column_order]
 
-    prediction = model.predict(df)
-    return int(prediction[0])  # Cast the prediction result to a Python int
+    prediction = model.predict_proba(df)
+    prediction = [round(prob, 2) for prob in prediction[0]]
+    return prediction[1]
+
+#    return int(prediction[0])  # Cast the prediction result to a Python int
 
 # Serve model prediction
 
