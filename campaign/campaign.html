@@ -412,9 +412,9 @@ Jan Kirenz
 <h2 id="toc-title">Table of contents</h2>
 <ul>
 <li class="fragment"><a href="#/introduction" id="/toc-introduction">Introduction</a></li>
-<li class="fragment"><a href="#/data" id="/toc-data">Data</a></li>
-<li class="fragment"><a href="#/model" id="/toc-model">Model</a></li>
-<li class="fragment"><a href="#/next-steps" id="/toc-next-steps">Next steps?</a></li>
+<li class="fragment"><a href="#/boosting-an-intuitive-introduction" id="/toc-boosting-an-intuitive-introduction">Boosting: An Intuitive Introduction</a></li>
+<li class="fragment"><a href="#/code-example" id="/toc-code-example">Code example</a></li>
+<li class="fragment"><a href="#/how-to-use-the-model" id="/toc-how-to-use-the-model">How to use the model?</a></li>
 <li class="fragment"><a href="#/questions" id="/toc-questions">Questions?</a></li>
 </ul>
 </nav>
@@ -445,8 +445,64 @@ Jan Kirenz
 </ul>
 </section></section>
 <section>
-<section id="data" class="title-slide slide level1 center">
-<h1>Data</h1>
+<section id="boosting-an-intuitive-introduction" class="title-slide slide level1 center">
+<h1>Boosting: An Intuitive Introduction</h1>
+
+</section>
+<section id="overview" class="slide level2">
+<h2>Overview</h2>
+<ul>
+<li class="fragment"><p>Boosting is an ensemble learning method</p></li>
+<li class="fragment"><p>Combines multiple weak learners to build a strong classifier</p></li>
+<li class="fragment"><p>Learners are trained sequentially</p></li>
+<li class="fragment"><p>Each learner focuses on correcting the mistakes of its predecessor</p></li>
+</ul>
+</section>
+<section id="intuition" class="slide level2">
+<h2>Intuition</h2>
+<ol type="1">
+<li class="fragment"><p>Begin with a weak learner that performs slightly better than random guessing</p></li>
+<li class="fragment"><p>Train a new weak learner to correct the mistakes of the previous one</p></li>
+<li class="fragment"><p>Repeat the process, focusing on different error patterns each time</p></li>
+<li class="fragment"><p>Combine all weak learners into a strong classifier</p></li>
+</ol>
+</section>
+<section id="difference-to-bagging" class="slide level2 smaller">
+<h2>Difference to Bagging</h2>
+<ul>
+<li class="fragment">Bagging:
+<ul>
+<li class="fragment">Learners are trained independently</li>
+<li class="fragment">Training samples are drawn with replacement (bootstrapping)</li>
+<li class="fragment">Combines learners by averaging (regression) or voting (classification)</li>
+</ul></li>
+<li class="fragment">Boosting:
+<ul>
+<li class="fragment">Learners are trained sequentially</li>
+<li class="fragment">Emphasis is placed on misclassified instances</li>
+<li class="fragment">Combines learners by weighted averaging</li>
+</ul></li>
+</ul>
+</section>
+<section id="advantages-of-boosting" class="slide level2">
+<h2>Advantages of Boosting</h2>
+<ul>
+<li class="fragment"><p>Can achieve high accuracy with simple weak learners</p></li>
+<li class="fragment"><p>Less prone to overfitting than single models</p></li>
+<li class="fragment"><p>Can be applied to various learning algorithms</p></li>
+</ul>
+</section>
+<section id="disadvantages-of-boosting" class="slide level2">
+<h2>Disadvantages of Boosting</h2>
+<ul>
+<li class="fragment"><p>Sensitive to noise and outliers</p></li>
+<li class="fragment"><p>Computationally expensive due to sequential training</p></li>
+<li class="fragment"><p>Can overfit if weak learners are too complex</p></li>
+</ul>
+</section></section>
+<section>
+<section id="code-example" class="title-slide slide level1 center">
+<h1>Code example</h1>
 
 </section>
 <section id="data-overview" class="slide level2">
@@ -709,11 +765,6 @@ memory usage: 41.1 KB</code></pre>
 
 </div>
 </div>
-</section></section>
-<section>
-<section id="model" class="title-slide slide level1 center">
-<h1>Model</h1>
-
 </section>
 <section id="select-model" class="slide level2">
 <h2>Select model</h2>
@@ -903,12 +954,12 @@ weighted avg       0.92      0.92      0.92       200
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">4</td>
-<td>0.000000</td>
+<td>0.000564</td>
 <td>city_Berlin</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">5</td>
-<td>0.000564</td>
+<td>0.000000</td>
 <td>city_Stuttgart</td>
 </tr>
 </tbody>
@@ -933,13 +984,13 @@ weighted avg       0.92      0.92      0.92       200
 <div class="cell fragment" data-execution_count="19">
 <div class="cell-output cell-output-display" data-execution_count="19">
 
-<div id="altair-viz-8eeb98b8f3354a54a0860458504779c5"></div>
+<div id="altair-viz-aec71ed164cb411ab374bbfbd57c77b5"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-8eeb98b8f3354a54a0860458504779c5") {
-      outputDiv = document.getElementById("altair-viz-8eeb98b8f3354a54a0860458504779c5");
+    if (outputDiv.id !== "altair-viz-aec71ed164cb411ab374bbfbd57c77b5") {
+      outputDiv = document.getElementById("altair-viz-aec71ed164cb411ab374bbfbd57c77b5");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm//vega@5?noext",
@@ -985,7 +1036,7 @@ weighted avg       0.92      0.92      0.92       200
         .catch(showError)
         .then(() => displayChart(vegaEmbed));
     }
-  })({"config": {"view": {"continuousWidth": 400, "continuousHeight": 300}}, "data": {"name": "data-7ea213f32e55d01f7270056c7c22859d"}, "mark": "bar", "encoding": {"x": {"field": "score", "type": "quantitative"}, "y": {"field": "name", "sort": "-x", "type": "nominal"}}, "height": 300, "width": 800, "$schema": "https://vega.github.io/schema/vega-lite/v4.17.0.json", "datasets": {"data-7ea213f32e55d01f7270056c7c22859d": [{"score": 0.13513147032599207, "name": "age"}, {"score": 0.35487473528940877, "name": "income"}, {"score": 0.005587388676431064, "name": "membership_days"}, {"score": 0.5038428218900224, "name": "campaign_engagement"}, {"score": 0.0, "name": "city_Berlin"}, {"score": 0.0005635838181457675, "name": "city_Stuttgart"}]}}, {"mode": "vega-lite"});
+  })({"config": {"view": {"continuousWidth": 400, "continuousHeight": 300}}, "data": {"name": "data-d174b1695bee1a332d00bf5bf13cdc0f"}, "mark": "bar", "encoding": {"x": {"field": "score", "type": "quantitative"}, "y": {"field": "name", "sort": "-x", "type": "nominal"}}, "height": 300, "width": 800, "$schema": "https://vega.github.io/schema/vega-lite/v4.17.0.json", "datasets": {"data-d174b1695bee1a332d00bf5bf13cdc0f": [{"score": 0.13513147032599193, "name": "age"}, {"score": 0.354874735289409, "name": "income"}, {"score": 0.0055873886764310435, "name": "membership_days"}, {"score": 0.5038428218900223, "name": "campaign_engagement"}, {"score": 0.0005635838181457689, "name": "city_Berlin"}, {"score": 0.0, "name": "city_Stuttgart"}]}}, {"mode": "vega-lite"});
 </script>
 </div>
 </div>
@@ -999,14 +1050,9 @@ weighted avg       0.92      0.92      0.92       200
 <div class="cell fragment" data-execution_count="20">
 
 </div>
-</section></section>
-<section>
-<section id="next-steps" class="title-slide slide level1 center">
-<h1>Next steps?</h1>
-
 </section>
-<section id="status-quo" class="slide level2">
-<h2>Status quo</h2>
+<section id="summary" class="slide level2">
+<h2>Summary</h2>
 <ol type="1">
 <li class="fragment"><p>We trained a model</p></li>
 <li class="fragment"><p>Our model makes a prediction if a customer will respond positively or not</p></li>
@@ -1014,9 +1060,14 @@ weighted avg       0.92      0.92      0.92       200
 <li class="fragment"><p>We saved the model</p></li>
 <li class="fragment"><p>We want to use the model to target customers</p></li>
 </ol>
+</section></section>
+<section>
+<section id="how-to-use-the-model" class="title-slide slide level1 center">
+<h1>How to use the model?</h1>
+
 </section>
-<section id="how-to-use-the-model" class="slide level2">
-<h2>How to use the model?</h2>
+<section id="dashboard-api" class="slide level2">
+<h2>Dashboard &amp; API</h2>
 <ul>
 <li class="fragment"><p>Integrate (“deploy”) the model in a dashboard (e.g.&nbsp;<a href="(https://streamlit.io/)">Streamlit</a>)</p></li>
 <li class="fragment"><p>Use an API (e.g.&nbsp;<a href="https://fastapi.tiangolo.com/">FastAPI</a>) to allow other software applications to use the model</p></li>
@@ -1041,7 +1092,7 @@ uvicorn fastapi_app:app --reload
 
 -->
 <ul>
-<li class="fragment"><p>FastAPI app with a single <code>/predict</code> endpoint</p></li>
+<li class="fragment"><p>Use an FastAPI app with a single <code>/predict</code> endpoint</p></li>
 <li class="fragment"><p>Accepts POST requests with JSON data containing age, city, income, membership days, and campaign engagement.</p></li>
 <li class="fragment"><p>The app will return a JSON response with the prediction.</p></li>
 </ul>
