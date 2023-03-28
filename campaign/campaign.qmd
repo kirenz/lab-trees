@@ -37,6 +37,7 @@ jupyter: python3
 
 import requests
 import numpy as np
+import altair as alt
 import pandas as pd
 from joblib import dump, load
 
@@ -67,7 +68,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix, classification_rep
    - to a future campaign 
    - based on their features
 
-- We use data from previous campaigns to train a model.
+- We use data from previous campaigns to train a model
 
 
 # Data
@@ -128,7 +129,16 @@ X = df.drop('target', axis=1)
 y = df['target']
 ```
 
-- Train, test split
+- Save feature names for later evaluation steps
+
+. . .
+
+```{python}
+feature_names = X.columns
+```
+
+- Make train and test split
+
 . . .
 
 ```{python}
@@ -141,6 +151,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 ## Select model
 
+- Define hyperparameters as dictionary
 
 . . .
 
@@ -166,7 +177,7 @@ clf = GradientBoostingClassifier(**params)
 
 ## Train model
 
-- Train the model on the training data
+- Train the model on the *training* data
 
 . . .
 
@@ -176,7 +187,7 @@ clf.fit(X_train, y_train)
 
 ## Evaluate model
 
-- Predict on the testing data
+- Predict on the *testing* data
 
 . . .
 
@@ -217,6 +228,42 @@ print(classification_report(y_test, y_pred))
 
 ```
 
+## Obtain feature importance
+
+- Obtain feature importance
+
+. . .
+
+```{python}
+feature_importance = clf.feature_importances_
+```
+
+- Save as dataframe
+
+. . .
+
+```{python}
+df_features = pd.DataFrame(
+    {"score": feature_importance,
+     "name": feature_names})
+
+df_features
+
+```
+
+## Plot feature importance
+
+```{python}
+alt.Chart(df_features).mark_bar().encode(
+    x=alt.X('score'),
+    y=alt.Y('name', sort='-x')
+).properties(
+    width=800,
+    height=300
+)
+
+```
+
 
 ## Save model
 
@@ -228,7 +275,7 @@ dump(clf, model_filename)
 ```
 
 
-# Next steps? {background-image="images/marketing.png"}
+# Next steps? 
 
 ## Status quo
 
@@ -236,18 +283,22 @@ dump(clf, model_filename)
 
 2. Our model makes a prediction if a customer will respond positively or not 
 
-3. We saved the model
+3. The model does a good job and we want to use it
+
+4. We saved the model
+
+5. We want to use the model to target customers
+
 
 ## How to use the model?
 
-- We want to use the model on "new" data
 
-- Integrate ("deploy") the model in a dashboard
+- Integrate ("deploy") the model in a dashboard (e.g. [Streamlit]((https://streamlit.io/)))
 
-- Use an API to allow other software applications to use the model
+- Use an API (e.g. [FastAPI](https://fastapi.tiangolo.com/)) to allow other software applications to use the model
 
 
-## Streamlit Dashboard
+## Streamlit dashboard 
 
 ![](images/streamlit.png)
 
@@ -342,3 +393,13 @@ age,city,income,membership_days,campaign_engagement,prediction
 35,city_Stuttgart,120000,250,8,0.97
 ```
 
+## Marketing campaign
+
+- Next, we would filter all customers at a certain threshold
+
+- What would be a good threshold?
+
+- Only target those customers with the marketing campaign
+
+
+# Questions? {background-image="images/marketing.png"}
