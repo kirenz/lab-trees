@@ -63,11 +63,11 @@ if st.button('Predict'):
     result = predict(age, city, income, membership_days, campaign_engagement)
     class_prediction = 1 if result[1] >= 0.5 else 0
 
-    st.header(f'The response probability is: {result[1]:.2f} %')
+    st.header(f'The response probability is: {100 * result[1]:.2f} %')
     if class_prediction == 0:
         st.write("It is unlikely that the customer will respond.")
     else:
         st.write("The customer is likely to respond.")
 
-    st.write(f':green[Probability of responding: {result[1]:.2f} %]')
+    st.write(f':green[Probability of responding: {100 * result[1]:.2f} %]')
     st.markdown(f':red[Probability of not responding: {result[0]:.2f} %]')
